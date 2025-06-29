@@ -1,0 +1,241 @@
+body {
+    background-image: url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(6px);
+    background-color: rgba(245, 247, 250, 0.85);
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 30px auto;
+    min-height: 100vh;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+h1 {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    margin-top: 8px;
+    font-size: 16px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    color: #34495e;
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h3 {
+    color: #34495e;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 20px 0 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #34495e;
+    font-size: 15px;
+}
+
+textarea {
+    padding: 10px 15px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid #dfe6e9;
+    min-height: 60px;
+    margin-bottom: 10px;
+    resize: vertical;
+    transition: border 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.4;
+    overflow-y: auto;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.hint {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+button {
+    min-width: 120px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+button[type="submit"] {
+    background-color: #3498db;
+}
+
+button[type="submit"]:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+button[type="button"] {
+    background-color: #2ecc71;
+}
+
+button[type="button"]:hover {
+    background-color: #27ae60;
+    transform: translateY(-1px);
+}
+
+.result, .error {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.result {
+    background-color: #f8f9fa;
+    border-left: 4px solid #2ecc71;
+}
+
+.error {
+    background-color: #fdecea;
+    border-left: 4px solid #e74c3c;
+}
+
+.forecast-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 15px 0;
+}
+
+.forecast-value span {
+    color: #3498db;
+}
+
+.metrics {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #dfe6e9;
+}
+
+.metrics p {
+    margin: 8px 0;
+    font-size: 15px;
+    color: #34495e;
+}
+
+.metrics strong {
+    font-weight: 600;
+}
+
+.metric-note {
+    color: #7f8c8d;
+    font-size: 13px;
+    margin-left: 10px;
+    font-style: italic;
+}
+
+.metric-tip {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-top: 10px;
+    font-style: italic;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.chart-container {
+    width: 100%;
+    height: 300px;
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 15px;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    button {
+        width: 100%;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result, .error {
+    animation: fadeIn 0.5s ease-out;
+}

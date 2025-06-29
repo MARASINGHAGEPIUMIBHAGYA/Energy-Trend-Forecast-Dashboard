@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>⚡ Power Forecast Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>🏠 Home Power Consumption</h1>
+            </div>
+            <p class="subtitle">Predict your next-hour energy usage with smart forecasting ✨</p>
+        </header>
+
+        <form method="POST">
+            <label for="input_values">🧮 Enter past 24 hours of energy consumption (kW):</label>
+            <textarea id="input_values" name="input_values" placeholder="e.g. 1.2, 1.0, 0.8, ..." required>{{ input_values if input_values else '' }}</textarea>
+            <p class="hint">Enter 24 comma-separated values representing hourly power consumption in kilowatts.</p>
+            <div class="button-group">
+                <button type="button" onclick="generateSample()">🎲 Generate Sample</button>
+                <button type="submit">📈 Forecast</button>
+            </div>
+        </form>
+
+        {% if forecast %}
+        <div class="result">
+            <h2>📊 Forecasted Value for Next Hour: <span class="forecast-value">{{ forecast }} kW 💡</span></h2>
+            <div class="chart-container">
+                <canvas id="forecastChart"></canvas>
+            </div>
+            <div class="metrics">
+                <h3>📏 Model Accuracy Insights</h3>
+                <p><strong>Mean Absolute Error (MAE):</strong> {{ '{:.3f}'.format(mae) }} <span class="metric-note"></span></p>
+                <p><strong>Mean Squared Error (MSE):</strong> {{ '{:.3f}'.format(mse) }} <span class="metric-note"></span></p>
+                <p><strong>Root Mean Squared Error (RMSE):</strong> {{ '{:.3f}'.format(rmse) }} <span class="metric-note"></span></p>
+                <p><strong>Model Accuracy:</strong> {{ '{:.3f}'.format(accuracy) }}%<span class="metric-note"></span></p>
+            </div>
+        </div>
+        {% elif error %}
+        <div class="error">
+            <p>❌ {{ error }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+    function generateSample() {
+        let values = [];
+        for (let i = 0; i < 24; i++) {
+            values.push((Math.random() * 2 + 0.8).toFixed(2));
+        }
+        document.getElementById('input_values').value = values.join(', ');
+    }
+    </script>
+
+    {% if forecast and input_values %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parse input data
+            const inputValues = "{{ input_values }}".split(',').map(function(v) {
+                return parseFloat(v.trim());
+            });
+            const forecastValue = parseFloat("{{ forecast }}");
+            
+            // Prepare chart data
+            const chartData = inputValues.concat([forecastValue]);
+            
+            // Prepare labels
+            const labels = [];
+            for (let i = 0; i < inputValues.length + 1; i++) {
+                labels.push(i < inputValues.length ? '-' + (inputValues.length - i) + 'h' : 'Next Hour');
+            }
+            
+            // Prepare point colors
+            const pointColors = [];
+            for (let i = 0; i < inputValues.length; i++) {
+                pointColors.push('rgba(41, 128, 185, 1)');
+            }
+            pointColors.push('rgba(1, 128, 60, 1)');
+            
+            // Create chart
+            const ctx = document.getElementById('forecastChart').getContext('2d');
+            const forecastChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Power Consumption (kW)',
+                        data: chartData,
+                        fill: true,
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        pointBackgroundColor: pointColors,
+                        pointRadius: 5,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(3) + ' kW';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Power Consumption (kW)',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time (Hours)',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    {% endif %}
+</body>
+</html>
